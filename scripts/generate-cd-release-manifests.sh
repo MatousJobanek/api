@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -ex
 additional_help() {
     echo "Important info: generate-release-manifest-for-cd.sh scripts overrides several parameters and expects/uses only some of the other ones - see below."
     echo ""
@@ -30,7 +30,7 @@ else
     if [[ -f ${GOPATH}/src/github.com/codeready-toolchain/api/${OLM_SETUP_FILE} ]]; then
         source ${GOPATH}/src/github.com/codeready-toolchain/api/${OLM_SETUP_FILE}
     else
-        source /dev/stdin <<< "$(curl -sSL https://raw.githubusercontent.com/codeready-toolchain/api/master/${OLM_SETUP_FILE})"
+        source /dev/stdin <<< "$(curl -sSL https://raw.githubusercontent.com/matousjobanek/api/master/${OLM_SETUP_FILE})"
     fi
 fi
 # read argument to get project root dir

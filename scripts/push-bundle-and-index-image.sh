@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 additional_help() {
     echo "Important info: push-bundle-and-index-image.sh scripts use only some parameters, so use only these to specify necessary values:"
     echo "                      --project-root"
@@ -107,7 +109,7 @@ else
     if [[ -f ${GOPATH}/src/github.com/codeready-toolchain/api/${OLM_SETUP_FILE} ]]; then
         source ${GOPATH}/src/github.com/codeready-toolchain/api/${OLM_SETUP_FILE}
     else
-        source /dev/stdin <<< "$(curl -sSL https://raw.githubusercontent.com/codeready-toolchain/api/master/${OLM_SETUP_FILE})"
+        source /dev/stdin <<< "$(curl -sSL https://raw.githubusercontent.com/matousjobanek/api/master/${OLM_SETUP_FILE})"
     fi
 fi
 # read argument to get project root dir
@@ -156,11 +158,11 @@ mv ${TEMP_DIR}/${PRJ_NAME}_${CURRENT_VERSION}_bundle.Dockerfile ${PKG_DIR}/bundl
 
 # build and push the bundle image
 if [[ ${IMAGE_BUILDER} == "buildah" ]]; then
-    ${IMAGE_BUILDER} bud --layers -f ${PKG_DIR}/bundle.Dockerfile -t ${BUNDLE_IMAGE} ${PKG_DIR}/.
-    ${IMAGE_BUILDER} push ${BUNDLE_IMAGE} docker://${BUNDLE_IMAGE}
+    ${IMAGE_BUILDER} bud ${BUILDER_ARGS} --layers -f ${PKG_DIR}/bundle.Dockerfile -t ${BUNDLE_IMAGE} ${PKG_DIR}/.
+    ${IMAGE_BUILDER} push ${BUILDER_ARGS} ${BUNDLE_IMAGE} docker://${BUNDLE_IMAGE}
 else
-    ${IMAGE_BUILDER} build -f ${PKG_DIR}/bundle.Dockerfile -t ${BUNDLE_IMAGE} ${PKG_DIR}/.
-    ${IMAGE_BUILDER} push ${BUNDLE_IMAGE}
+    ${IMAGE_BUILDER} build ${BUILDER_ARGS} -f ${PKG_DIR}/bundle.Dockerfile -t ${BUNDLE_IMAGE} ${PKG_DIR}/.
+    ${IMAGE_BUILDER} push ${BUILDER_ARGS} ${BUNDLE_IMAGE}
 fi
 
 # add manifests to the bundle image
@@ -168,9 +170,9 @@ cd ${PKG_DIR}
 opm alpha bundle build --image-builder ${IMAGE_BUILDER} --directory ./manifests/ -t ${BUNDLE_IMAGE} -p ${OPERATOR_NAME} -c ${CHANNEL} -e ${CHANNEL}
 
 if [[ ${IMAGE_BUILDER} == "buildah" ]]; then
-    ${IMAGE_BUILDER} push ${BUNDLE_IMAGE} docker://${BUNDLE_IMAGE}
+    ${IMAGE_BUILDER} push ${BUILDER_ARGS} ${BUNDLE_IMAGE} docker://${BUNDLE_IMAGE}
 else
-    ${IMAGE_BUILDER} push ${BUNDLE_IMAGE}
+    ${IMAGE_BUILDER} push ${BUILDER_ARGS} ${BUNDLE_IMAGE}
 fi
 cd ${CURRENT_DIR}
 
@@ -192,7 +194,7 @@ else
 fi
 
 if [[ ${IMAGE_BUILDER} == "buildah" ]]; then
-    ${IMAGE_BUILDER} push ${INDEX_IMAGE} docker://${INDEX_IMAGE}
+    ${IMAGE_BUILDER} push ${BUILDER_ARGS} ${INDEX_IMAGE} docker://${INDEX_IMAGE}
 else
-    ${IMAGE_BUILDER} push ${INDEX_IMAGE}
+    ${IMAGE_BUILDER} push ${BUILDER_ARGS} ${INDEX_IMAGE}
 fi

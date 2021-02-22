@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Exit on error
-set -e
+set -ex
 
 user_help () {
     echo "Generate ClusterServiceVersion and additional deployment files for openshift-marketplace"
@@ -18,6 +18,7 @@ user_help () {
     echo "-qn, --quay-namespace    Specify the quay namespace the CSV should be pushed to - if not used then it uses the one stored in \"\${QUAY_NAMESPACE}\" variable"
     echo "-td, --temp-dir          Directory that should be used for storing temporal files - by default '/tmp' is used"
     echo "-ib, --image-builder     Tool to build container images - will be used by opm. One of: [docker, podman, buildah] (default "docker")"
+    echo "-ba, --builder-args      Additional image builder arguments"
     echo "-im, --index-image       Name of the index image where the bundle image should be added - when building & pushing operator bundle as an image."
     echo "-ic, --index-per-commit  If set to true, then the script will build&push unique index image for every release/commit."
     echo "-fr, --first-release     If set to true, then it will generate CSV without replaces clause."
@@ -99,6 +100,11 @@ read_arguments() {
                 -ib|--image-builder)
                     shift
                     IMAGE_BUILDER=$1
+                    shift
+                    ;;
+                -ba|--builder-args)
+                    shift
+                    BUILDER_ARGS=$1
                     shift
                     ;;
                 -im|--index-image)
