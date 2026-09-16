@@ -33,6 +33,8 @@ const (
 	UserVerificationExpiryAnnotationKey = LabelKeyPrefix + "verification-expiry"
 	// SkipAutoCreateSpaceAnnotationKey when true signals the usersignup controller to skip Space creation, otherwise a Space will be created by default
 	SkipAutoCreateSpaceAnnotationKey = LabelKeyPrefix + "skip-auto-create-space"
+	// UserSignupVerifiedTimestampAnnotationKey defines when the UserSignup was successfully verified last time
+	UserSignupVerifiedTimestampAnnotationKey = LabelKeyPrefix + "verified-at"
 	// UserSignupActivationCounterAnnotationKey is used for the usersignup activation counter annotation key
 	// Activations are counted after phone verification succeeded
 	UserSignupActivationCounterAnnotationKey = LabelKeyPrefix + "activation-counter"
@@ -86,6 +88,8 @@ const (
 	UserSignupStateLabelValueBanned = "banned"
 	// UserSignupStateLabelValueRejected is used for identifying that the UserSignup was rejected
 	UserSignupStateLabelValueRejected = "rejected"
+	// UserSignupStateLabelValueNoProvisioning is used for identifying that the UserSignup that was verified but won't be provisioned
+	UserSignupStateLabelValueNoProvisioning = "no-provisioning"
 
 	// Status condition reasons
 	UnableToCreateSpaceBinding                     = "UnableToCreateSpaceBinding"
@@ -115,6 +119,7 @@ const (
 	UserSignupUserBanningReason                = "Banning"
 	UserSignupUserBannedReason                 = "Banned"
 	UserSignupUserRejectedReason               = "Rejected"
+	UserSignupInNoProvisioningStateReason      = "InNoProvisioningState"
 	UserSignupFailedToReadBannedUsersReason    = "FailedToReadBannedUsers"
 	UserSignupMissingUserEmailReason           = "MissingUserEmail"
 	UserSignupMissingUserEmailAnnotationReason = "MissingUserEmailAnnotation"
@@ -178,6 +183,9 @@ const (
 	// UserSignupStateRejected - If this state is set, the user was rejected
 	// and their account will not be provisioned.
 	UserSignupStateRejected = UserSignupState("rejected")
+
+	// UserSignupStateNoProvisioning - If this state is set, the user goes only through the signup gating mechanisms but is not provisioned
+	UserSignupStateNoProvisioning = UserSignupState("no-provisioning")
 
 	// ###############################################################################
 	//    Account Verifier accepted verdict values
