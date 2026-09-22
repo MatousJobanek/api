@@ -270,6 +270,7 @@ type RegistrationServiceConfig struct {
 	AccountVerifierMode *string `json:"accountVerifierMode,omitempty"`
 
 	// VerifiedTimestampExpiryDays controls for how many days the verified timestamp at UserSignup stays valid
+	// +optional
 	VerifiedTimestampExpiryDays *int `json:"verifiedTimestampExpiryDays,omitempty"`
 }
 
