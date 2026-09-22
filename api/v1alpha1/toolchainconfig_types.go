@@ -271,7 +271,7 @@ type RegistrationServiceConfig struct {
 
 	// VerifiedTimestampExpiryDays controls for how many days the verified timestamp at UserSignup stays valid
 	// +optional
-	VerifiedTimestampExpiryDays *int `json:"verifiedTimestampExpiryDays,omitempty"`
+	VerifiedTimestampExpiryDays *uint `json:"verifiedTimestampExpiryDays,omitempty"`
 }
 
 // RegistrationServiceAnalyticsConfig contains the subset of registration service configuration parameters related to analytics

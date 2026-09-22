@@ -1954,7 +1954,7 @@ func (in *RegistrationServiceConfig) DeepCopyInto(out *RegistrationServiceConfig
 	}
 	if in.VerifiedTimestampExpiryDays != nil {
 		in, out := &in.VerifiedTimestampExpiryDays, &out.VerifiedTimestampExpiryDays
-		*out = new(int)
+		*out = new(uint)
 		**out = **in
 	}
 }
