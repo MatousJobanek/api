@@ -271,6 +271,7 @@ type RegistrationServiceConfig struct {
 
 	// VerifiedTimestampExpiryDays controls for how many days the verified timestamp at UserSignup stays valid
 	// +optional
+	// +kubebuilder:validation:Minimum=0
 	VerifiedTimestampExpiryDays *uint `json:"verifiedTimestampExpiryDays,omitempty"`
 }
 
